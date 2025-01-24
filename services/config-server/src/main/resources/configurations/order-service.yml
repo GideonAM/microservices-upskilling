@@ -1,8 +1,8 @@
 server:
-  port: 7148
+  port: 4287
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ms_upskill_customer_service
+    url: jdbc:postgresql://localhost:5432/ms_upskill_order_service
     username: postgres
     password: root
     hikari:
