@@ -1,0 +1,8 @@
+server:
+  port: 7148
+spring:
+  config:
+    import: optional:customer_secrets.yml
+  jpa:
+    hibernate:
+      ddl-auto: update

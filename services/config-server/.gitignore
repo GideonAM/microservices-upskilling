@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### evn ###
+src/main/resources/configurations/customer_secrets.yml
