@@ -21,10 +21,10 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
 
-    public CategoryDto createCategory(CategoryDto categoryDto) {
+    public String createCategory(CategoryDto categoryDto) {
         Category category = categoryMapper.toCategory(categoryDto);
         categoryRepository.save(category);
-        return categoryDto;
+        return "Category created successfully";
     }
 
     public PageResponse<CategoryDto> getAllCategories(int page, int size) {
