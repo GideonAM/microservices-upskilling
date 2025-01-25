@@ -9,7 +9,9 @@ import com.redeemerlives.customer_service.repository.CustomerRepository;
 import com.redeemerlives.customer_service.repository.TokenRepository;
 import com.redeemerlives.customer_service.security.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationProvider authenticationProvider;
     private final JwtService jwtService;
 
     public AuthenticationResponse register(CustomerDto customerDto) {
@@ -52,10 +55,11 @@ public class CustomerService {
     }
 
     public AuthenticationResponse login(CustomerDto customerDto) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(customerDto.getEmail(), customerDto.getPassword());
+        Authentication authenticated = authenticationProvider.authenticate(
+                new UsernamePasswordAuthenticationToken(customerDto.getEmail(), customerDto.getPassword())
+        );
 
-        Customers customer = (Customers) authenticationToken.getDetails();
+        Customers customer = (Customers) authenticated.getDetails();
         tokenRepository.findByCustomers(customer)
                 .ifPresent(tokenRepository::delete);
 
