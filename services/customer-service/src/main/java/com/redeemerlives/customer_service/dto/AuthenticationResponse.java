@@ -16,5 +16,5 @@ public class AuthenticationResponse {
     private String message;
     private String token;
     @JsonProperty("user")
-    private CustomerDtoResponse user;
+    private CustomerDto user;
 }

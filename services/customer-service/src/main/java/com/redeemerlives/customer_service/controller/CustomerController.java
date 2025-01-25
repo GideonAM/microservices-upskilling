@@ -24,4 +24,14 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.login(customerDto));
     }
 
+    @GetMapping("/{customer-id}")
+    public ResponseEntity<CustomerDto> findById(@PathVariable("customer-id") String customerId) {
+        return ResponseEntity.ok(customerService.findById(customerId));
+    }
+
+    @PutMapping("/customer-id}")
+    public ResponseEntity<CustomerDto> updateCustomer(@PathVariable("customer-id") String customerId ,CustomerDto customerDto) {
+        return ResponseEntity.ok(customerService.updateCustomer(customerId ,customerDto));
+    }
+
 }
