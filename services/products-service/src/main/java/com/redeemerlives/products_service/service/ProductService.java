@@ -2,8 +2,11 @@ package com.redeemerlives.products_service.service;
 
 import com.redeemerlives.products_service.dto.PageResponse;
 import com.redeemerlives.products_service.dto.ProductDto;
+import com.redeemerlives.products_service.dto.ProductPurchaseRequest;
+import com.redeemerlives.products_service.dto.ProductPurchaseResponse;
 import com.redeemerlives.products_service.entity.Category;
 import com.redeemerlives.products_service.entity.Products;
+import com.redeemerlives.products_service.exception.OperationNotPermittedException;
 import com.redeemerlives.products_service.mapper.ProductMapper;
 import com.redeemerlives.products_service.repository.CategoryRepository;
 import com.redeemerlives.products_service.repository.ProductRepository;
@@ -14,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -79,5 +84,33 @@ public class ProductService {
                 });
 
         return "Product deleted successfully";
+    }
+
+    public List<ProductPurchaseResponse> purchaseProducts(List<ProductPurchaseRequest> purchaseRequests) {
+        List<String> productIds = purchaseRequests.stream().map(ProductPurchaseRequest::productId).toList();
+        List<Products> products = productRepository.findAllById(productIds);
+
+        if (productIds.size() != products.size())
+            throw new OperationNotPermittedException("Some of the purchased products does not exist");
+
+        purchaseRequests.sort(Comparator.comparing(ProductPurchaseRequest::productId));
+        products.sort(Comparator.comparing(Products::getId));
+
+        var purchasedProducts = new ArrayList<ProductPurchaseResponse>();
+        for (int i = 0; i < products.size(); i++) {
+            var product = products.get(i);
+            var orderItem = purchaseRequests.get(i);
+
+            if (product.getAvailableQuantity() < orderItem.productQuantity())
+                throw new OperationNotPermittedException(String.format("%s is currently out of stock", product.getName()));
+
+            int newAvailableQuantity = product.getAvailableQuantity() - orderItem.productQuantity();
+            product.setAvailableQuantity(newAvailableQuantity);
+            productRepository.save(product);
+
+            purchasedProducts.add(productMapper.toPurchasedProduct(product));
+        }
+
+        return purchasedProducts;
     }
 }

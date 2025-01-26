@@ -1,6 +1,7 @@
 package com.redeemerlives.products_service.mapper;
 
 import com.redeemerlives.products_service.dto.ProductDto;
+import com.redeemerlives.products_service.dto.ProductPurchaseResponse;
 import com.redeemerlives.products_service.entity.Category;
 import com.redeemerlives.products_service.entity.Products;
 import org.springframework.stereotype.Component;
@@ -35,6 +36,15 @@ public class ProductMapper {
                 .description(productDto.description())
                 .availableQuantity(productDto.availableQuantity())
                 .price(productDto.price())
+                .build();
+    }
+
+    public ProductPurchaseResponse toPurchasedProduct(Products product) {
+        return ProductPurchaseResponse.builder()
+                .productId(product.getId())
+                .productName(product.getName())
+                .productQuantity(product.getAvailableQuantity())
+                .productPrice(product.getPrice())
                 .build();
     }
 }

@@ -2,11 +2,15 @@ package com.redeemerlives.products_service.controller;
 
 import com.redeemerlives.products_service.dto.PageResponse;
 import com.redeemerlives.products_service.dto.ProductDto;
+import com.redeemerlives.products_service.dto.ProductPurchaseRequest;
+import com.redeemerlives.products_service.dto.ProductPurchaseResponse;
 import com.redeemerlives.products_service.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -46,6 +50,12 @@ public class ProductController {
     @DeleteMapping("/{product-id}")
     public ResponseEntity<String> deleteProductById(@PathVariable("product-id") String productId) {
         return ResponseEntity.ok(productService.deleteProductById(productId));
+    }
+
+    @PostMapping("/purchase")
+    public ResponseEntity<List<ProductPurchaseResponse>> purchaseProducts(
+            @RequestBody List<ProductPurchaseRequest> purchaseRequests) {
+        return ResponseEntity.ok(productService.purchaseProducts(purchaseRequests));
     }
 
 }
