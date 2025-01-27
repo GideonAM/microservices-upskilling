@@ -26,8 +26,8 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<PageResponse<ProductDto>> getAllProducts(
-            @RequestParam(name = "page", value = "0", required = false) int page,
-            @RequestParam(name = "size", value = "10", required = false) int size
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size
     ) {
         return ResponseEntity.ok(productService.getAllProducts(page, size));
     }
@@ -35,8 +35,8 @@ public class ProductController {
     @GetMapping("/{product-name}")
     public ResponseEntity<PageResponse<ProductDto>> searchProductByName(
             @PathVariable("product-name") String productName,
-            @RequestParam(name = "page", value = "0", required = false) int page,
-            @RequestParam(name = "size", value = "10", required = false) int size
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size
     ) {
         return ResponseEntity.ok(productService.searchProductByName(productName, page, size));
     }
