@@ -61,7 +61,7 @@ public class CategoryService {
     }
 
     public List<CategoryDto> searchCategoryByName(String categoryName) {
-        List<Category> categories = categoryRepository.findAllByNameContaining(categoryName);
+        List<Category> categories = categoryRepository.findAllByNameContainingIgnoreCase(categoryName);
         return categories.stream().map(categoryMapper::toCategoryDto).toList();
     }
 }
