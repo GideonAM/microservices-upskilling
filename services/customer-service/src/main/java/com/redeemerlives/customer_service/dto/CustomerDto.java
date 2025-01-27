@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerDto {
+    private String customerId;
     private String email;
     private String firstname;
     private String lastname;
