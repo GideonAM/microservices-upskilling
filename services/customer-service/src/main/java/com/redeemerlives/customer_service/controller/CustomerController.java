@@ -29,7 +29,7 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.findById(customerId));
     }
 
-    @PutMapping("/customer-id}")
+    @PutMapping("/{customer-id}")
     public ResponseEntity<CustomerDto> updateCustomer(@PathVariable("customer-id") String customerId ,CustomerDto customerDto) {
         return ResponseEntity.ok(customerService.updateCustomer(customerId ,customerDto));
     }
