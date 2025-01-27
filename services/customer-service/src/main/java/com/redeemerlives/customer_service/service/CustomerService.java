@@ -51,7 +51,7 @@ public class CustomerService {
                 new UsernamePasswordAuthenticationToken(customerDto.getEmail(), customerDto.getPassword())
         );
 
-        Customers customer = (Customers) authenticated.getDetails();
+        Customers customer = (Customers) authenticated.getPrincipal();
         tokenRepository.findByCustomers(customer)
                 .ifPresent(tokenRepository::delete);
 
