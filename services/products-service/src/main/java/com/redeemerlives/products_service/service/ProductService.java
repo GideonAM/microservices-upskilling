@@ -54,7 +54,7 @@ public class ProductService {
 
     public PageResponse<ProductDto> searchProductByName(String productName, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Products> products = productRepository.findAllByNameContaining(productName, pageable);
+        Page<Products> products = productRepository.findAllByNameContainingIgnoreCase(productName, pageable);
         List<ProductDto> data = products.stream().map(productMapper::toProductDto).toList();
 
         return new PageResponse<>(
@@ -108,7 +108,8 @@ public class ProductService {
             product.setAvailableQuantity(newAvailableQuantity);
             productRepository.save(product);
 
-            purchasedProducts.add(productMapper.toPurchasedProduct(product));
+            int quantityPurchased = orderItem.productQuantity();
+            purchasedProducts.add(productMapper.toPurchasedProduct(product, quantityPurchased));
         }
 
         return purchasedProducts;

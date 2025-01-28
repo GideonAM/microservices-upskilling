@@ -24,7 +24,7 @@ public class AppExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> exception(Exception exception) {
         log.error(exception.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
     }
 
 }

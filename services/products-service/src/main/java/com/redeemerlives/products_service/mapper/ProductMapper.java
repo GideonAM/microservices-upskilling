@@ -41,11 +41,11 @@ public class ProductMapper {
                 .build();
     }
 
-    public ProductPurchaseResponse toPurchasedProduct(Products product) {
+    public ProductPurchaseResponse toPurchasedProduct(Products product, int quantityPurchased) {
         return ProductPurchaseResponse.builder()
                 .productId(product.getId())
                 .productName(product.getName())
-                .productQuantity(product.getAvailableQuantity())
+                .productQuantity(quantityPurchased)
                 .productPrice(product.getPrice())
                 .build();
     }
