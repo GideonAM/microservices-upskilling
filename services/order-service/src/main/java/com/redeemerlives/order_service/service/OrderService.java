@@ -21,7 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -42,17 +42,17 @@ public class OrderService {
         List<ProductPurchaseResponse> purchaseResponse = productServiceClient.purchaseProducts(orderDto.orderItems())
                 .orElseThrow(() -> new OperationNotPermitted("Failed to place order"));
 
-        Orders order = Orders.builder()
-                .customerId(orderDto.customerId())
-                .paymentMethod(orderDto.paymentMethod())
-                .createdAt(LocalDateTime.now())
-                .build();
+        Orders order = orderMapper.toOrder(orderDto);
         orderRepository.save(order);
 
         List<OrderItems> orderItems = purchaseResponse.stream()
                 .map(item -> orderItemMapper.toOrderItem(item, order))
                 .toList();
         orderItemRepository.saveAll(orderItems);
+
+        BigDecimal totalOrderCost = orderItems.stream()
+                .map(item -> item.getProductPrice().multiply(new BigDecimal(item.getProductQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         // then proceed with payments
         // send order confirmation email

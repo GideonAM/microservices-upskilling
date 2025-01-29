@@ -4,6 +4,8 @@ import com.redeemerlives.order_service.dto.OrderDto;
 import com.redeemerlives.order_service.entity.Orders;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class OrderMapper {
 
@@ -16,4 +18,11 @@ public class OrderMapper {
                 .build();
     }
 
+    public Orders toOrder(OrderDto orderDto) {
+        return Orders.builder()
+                .customerId(orderDto.customerId())
+                .paymentMethod(orderDto.paymentMethod())
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
 }
