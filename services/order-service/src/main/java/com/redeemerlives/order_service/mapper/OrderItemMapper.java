@@ -12,6 +12,8 @@ public class OrderItemMapper {
         return OrderItems.builder()
                 .productId(item.productId())
                 .productQuantity(item.productQuantity())
+                .productName(item.productName())
+                .productPrice(item.productPrice())
                 .order(order)
                 .build();
     }
