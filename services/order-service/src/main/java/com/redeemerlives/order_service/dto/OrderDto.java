@@ -1,6 +1,5 @@
 package com.redeemerlives.order_service.dto;
 
-import com.redeemerlives.order_service.entity.PaymentMethod;
 import lombok.Builder;
 
 import java.time.LocalDateTime;

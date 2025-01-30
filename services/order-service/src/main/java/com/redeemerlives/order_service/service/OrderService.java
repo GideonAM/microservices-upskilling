@@ -1,11 +1,9 @@
 package com.redeemerlives.order_service.service;
 
 import com.redeemerlives.order_service.clients.CustomerServiceClient;
+import com.redeemerlives.order_service.clients.PaymentServiceClient;
 import com.redeemerlives.order_service.clients.ProductServiceClient;
-import com.redeemerlives.order_service.dto.CustomerDto;
-import com.redeemerlives.order_service.dto.OrderDto;
-import com.redeemerlives.order_service.dto.PageResponse;
-import com.redeemerlives.order_service.dto.ProductPurchaseResponse;
+import com.redeemerlives.order_service.dto.*;
 import com.redeemerlives.order_service.entity.OrderItems;
 import com.redeemerlives.order_service.entity.Orders;
 import com.redeemerlives.order_service.exception.OperationNotPermitted;
@@ -30,6 +28,7 @@ public class OrderService {
 
     private final CustomerServiceClient customerServiceClient;
     private final ProductServiceClient productServiceClient;
+    private final PaymentServiceClient paymentServiceClient;
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final OrderItemMapper orderItemMapper;
@@ -43,7 +42,7 @@ public class OrderService {
                 .orElseThrow(() -> new OperationNotPermitted("Failed to place order"));
 
         Orders order = orderMapper.toOrder(orderDto);
-        orderRepository.save(order);
+        Orders savedOrder = orderRepository.save(order);
 
         List<OrderItems> orderItems = purchaseResponse.stream()
                 .map(item -> orderItemMapper.toOrderItem(item, order))
@@ -54,8 +53,10 @@ public class OrderService {
                 .map(item -> item.getProductPrice().multiply(new BigDecimal(item.getProductQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        // then proceed with payments
-        // send order confirmation email
+        PaymentDto paymentDto = orderMapper.toPaymentDto(savedOrder, customer, totalOrderCost, orderDto.paymentMethod());
+        paymentServiceClient.createPayment(paymentDto);
+
+        // send order confirmation email to kafka
         return "Order placed successfully";
     }
 

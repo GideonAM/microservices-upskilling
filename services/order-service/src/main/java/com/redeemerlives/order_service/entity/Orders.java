@@ -1,5 +1,6 @@
 package com.redeemerlives.order_service.entity;
 
+import com.redeemerlives.order_service.dto.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
