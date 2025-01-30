@@ -21,3 +21,8 @@ spring:
           uri: lb:http://order-service
           predicates:
           - Path=/api/v1/orders/**
+
+        - id: payments-service
+          uri: lb:http://payments-service
+          predicates:
+          - Path=/api/v1/payments/**
