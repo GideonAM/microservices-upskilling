@@ -7,6 +7,8 @@ import com.redeemerlives.order_service.dto.*;
 import com.redeemerlives.order_service.entity.OrderItems;
 import com.redeemerlives.order_service.entity.Orders;
 import com.redeemerlives.order_service.exception.OperationNotPermitted;
+import com.redeemerlives.order_service.kafka.OrderProducer;
+import com.redeemerlives.order_service.kafka.OrderProducerDto;
 import com.redeemerlives.order_service.mapper.OrderItemMapper;
 import com.redeemerlives.order_service.mapper.OrderMapper;
 import com.redeemerlives.order_service.repository.OrderItemRepository;
@@ -33,6 +35,7 @@ public class OrderService {
     private final OrderItemRepository orderItemRepository;
     private final OrderItemMapper orderItemMapper;
     private final OrderMapper orderMapper;
+    private final OrderProducer orderProducer;
 
     @Transactional
     public String placeOrder(OrderDto orderDto) {
@@ -56,7 +59,12 @@ public class OrderService {
         PaymentDto paymentDto = orderMapper.toPaymentDto(savedOrder, customer, totalOrderCost, orderDto.paymentMethod());
         paymentServiceClient.createPayment(paymentDto);
 
-        // send order confirmation email to kafka
+        OrderProducerDto producerDto = new OrderProducerDto(savedOrder.getId(),
+                savedOrder.getCreatedAt(),
+                customer.firstname(),
+                customer.lastname(),
+                customer.email());
+        orderProducer.sendOrderConfirmation(producerDto);
         return "Order placed successfully";
     }
 
