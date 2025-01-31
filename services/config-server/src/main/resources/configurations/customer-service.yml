@@ -1,0 +1,12 @@
+server:
+  port: 7148
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ms_upskill_customer_service
+    username: postgres
+    password: root
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: update

@@ -1,0 +1,17 @@
+server:
+  port: 1840
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ms_upskill_payments_service
+    username: postgres
+    password: root
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: update
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
