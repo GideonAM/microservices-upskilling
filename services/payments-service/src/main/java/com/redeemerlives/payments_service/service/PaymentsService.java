@@ -3,6 +3,8 @@ package com.redeemerlives.payments_service.service;
 import com.redeemerlives.payments_service.PaymentsRepository;
 import com.redeemerlives.payments_service.dto.PaymentDto;
 import com.redeemerlives.payments_service.entity.Payments;
+import com.redeemerlives.payments_service.kafka.PaymentProducer;
+import com.redeemerlives.payments_service.kafka.PaymentProducerDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class PaymentsService {
 
     private final PaymentsRepository paymentsRepository;
+    private final PaymentProducer paymentProducer;
 
     public String createPayment(PaymentDto paymentDto) {
 
@@ -21,8 +24,15 @@ public class PaymentsService {
                 .build();
         paymentsRepository.save(payment);
 
-        // Todo
-        // send payment confirmation to Kafka broker for processing
+        PaymentProducerDto producerDto = new PaymentProducerDto(
+                paymentDto.getPaymentMethod().toString(),
+                paymentDto.getAmount(),
+                paymentDto.getOrderId(),
+                paymentDto.getCustomer().firstname(),
+                paymentDto.getCustomer().lastname(),
+                paymentDto.getCustomer().email()
+        );
+        paymentProducer.sendPaymentsToKafka(producerDto);
 
         return "Payment processed successfully";
     }
