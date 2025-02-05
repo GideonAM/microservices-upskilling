@@ -11,7 +11,7 @@
         <module name="gateway-server" />
         <module name="discovery-server" />
       </profile>
-      <profile name="Annotation profile for payments-service" enabled="true">
+      <profile name="Annotation profile for notification-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -21,8 +21,8 @@
         <module name="products-service" />
         <module name="order-service" />
         <module name="customer-service" />
-        <module name="payments-service" />
         <module name="notification-service" />
+        <module name="payments-service" />
       </profile>
     </annotationProcessing>
   </component>

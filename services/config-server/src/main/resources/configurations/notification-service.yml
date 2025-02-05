@@ -10,3 +10,28 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  mail:
+    host: localhost
+    port: 1025
+    username: admin
+    password: password
+    properties:
+      mail:
+        smtp:
+          trust: '*'
+        auth: true
+        starttls:
+          enabled: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: paymentGroup,orderGroup
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*' # do not use '*' in production
+        spring.json.type.mapping: paymentConfirmation:com.redeemerlives.notification_service.kafka_dto.PaymentConfirmation
