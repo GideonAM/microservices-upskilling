@@ -13,9 +13,11 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.redeemerlives.notification_service.EmailTemplates.ORDER_EMAIL;
 import static com.redeemerlives.notification_service.EmailTemplates.PAYMENT_EMAIL;
 
 @Service
@@ -59,7 +61,39 @@ public class EmailService {
             javaMailSender.send(message);
         } catch (MessagingException exception) {
             log.warn("FAILED TO SEND EMAIL TO {}", receiverEmail);
+            throw new MessagingException("Failed to send Payment Confirmation email");
         }
     }
 
+    public void sendOrderEmail(String email,
+                               String orderId,
+                               LocalDateTime createdAt,
+                               String customerName) throws MessagingException {
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message,
+                MimeMessageHelper.MULTIPART_MODE_RELATED,
+                StandardCharsets.UTF_8.displayName());
+
+        helper.setFrom("no-reply@ms-upskilling.com");
+        helper.setTo(email);
+        helper.setSubject(ORDER_EMAIL.getEmailTopic());
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("orderId", orderId);
+        variables.put("createdAt", createdAt);
+        variables.put("customerName", customerName);
+
+        Context  context = new Context();
+        context.setVariables(variables);
+
+        try {
+            String html = templateEngine.process(ORDER_EMAIL.getTemplateName(), context);
+            helper.setText(html, true);
+            javaMailSender.send(message);
+        } catch (MessagingException exception) {
+            log.warn("FAILED TO SEND EMAIL TO {}", email);
+            throw new MessagingException("Failed to send Order Confirmation email");
+        }
+    }
 }

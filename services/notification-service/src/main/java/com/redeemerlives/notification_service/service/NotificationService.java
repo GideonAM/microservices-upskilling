@@ -1,5 +1,6 @@
 package com.redeemerlives.notification_service.service;
 
+import com.redeemerlives.notification_service.kafka_dto.OrderConfirmation;
 import com.redeemerlives.notification_service.kafka_dto.PaymentConfirmation;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,17 @@ public class NotificationService {
                 paymentConfirmation.paymentMethod(),
                 customerName,
                 paymentConfirmation.orderId()
+        );
+    }
+
+    @KafkaListener(topics = "order-topic")
+    public void sendOrderEmail(OrderConfirmation orderConfirmation) throws MessagingException {
+        var customerName = String.format("%s %s", orderConfirmation.firstname(), orderConfirmation.lastname());
+        emailService.sendOrderEmail(
+                orderConfirmation.email(),
+                orderConfirmation.orderId(),
+                orderConfirmation.createdAt(),
+                customerName
         );
     }
 

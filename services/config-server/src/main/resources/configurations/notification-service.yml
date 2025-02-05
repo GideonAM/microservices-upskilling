@@ -34,4 +34,5 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: '*' # do not use '*' in production
-        spring.json.type.mapping: paymentConfirmation:com.redeemerlives.notification_service.kafka_dto.PaymentConfirmation
+        spring.json.type.mapping: paymentConfirmation:com.redeemerlives.notification_service.kafka_dto.PaymentConfirmation, 
+          orderConfirmation:com.redeemerlives.notification_service.kafka_dto.OrderConfirmation
