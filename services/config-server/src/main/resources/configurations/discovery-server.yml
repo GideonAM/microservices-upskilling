@@ -1,0 +1,6 @@
+server:
+  port: 9000
+eureka:
+  client:
+    registerWithEureka: false
+    fetch-registry: false

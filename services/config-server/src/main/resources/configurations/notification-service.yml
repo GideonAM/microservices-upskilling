@@ -1,0 +1,12 @@
+server:
+  port: 4514
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ms_upskill_notification_service
+    username: postgres
+    password: root
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: update
