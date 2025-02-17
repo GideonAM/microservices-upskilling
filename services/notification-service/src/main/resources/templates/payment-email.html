@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Confirmation</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        color: #333;
+        line-height: 1.6;
+    }
+    .container {
+        width: 80%;
+        margin: 0 auto;
+        background-color: #f8f8f8;
+        padding: 20px;
+        border-radius: 8px;
+    }
+    .header {
+        text-align: center;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 0;
+        border-radius: 8px;
+    }
+    .content {
+        margin: 20px 0;
+    }
+    .content p {
+        font-size: 16px;
+    }
+    .payment-info {
+        background-color: #ffffff;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+    .payment-info table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .payment-info th, .payment-info td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    .footer {
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+        margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Payment Confirmation</h1>
+  </div>
+
+  <div class="content">
+    <p>Dear <strong th:text="${receiverName}">Receiver Name</strong>,</p>
+
+    <p>We are pleased to inform you that your payment has been successfully processed. Below are the details of your transaction:</p>
+
+    <div class="payment-info">
+      <table>
+        <tr>
+          <th>Order ID</th>
+          <td th:text="${orderId}">Order ID</td>
+        </tr>
+        <tr>
+          <th>Payment Method</th>
+          <td th:text="${paymentMethod}">Payment Method</td>
+        </tr>
+        <tr>
+          <th>Payment Amount</th>
+          <td th:text="${paymentAmount}">Payment Amount</td>
+        </tr>
+      </table>
+    </div>
+
+    <p>If you have any questions or concerns, feel free to reach out to our support team.</p>
+    <p>Thank you for choosing us!</p>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 Microservices UPSKILLING. All rights reserved.</p>
+  </div>
+</div>
+</body>
+</html>

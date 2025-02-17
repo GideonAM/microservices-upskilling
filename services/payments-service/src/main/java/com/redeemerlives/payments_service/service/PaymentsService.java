@@ -4,7 +4,7 @@ import com.redeemerlives.payments_service.PaymentsRepository;
 import com.redeemerlives.payments_service.dto.PaymentDto;
 import com.redeemerlives.payments_service.entity.Payments;
 import com.redeemerlives.payments_service.kafka.PaymentProducer;
-import com.redeemerlives.payments_service.kafka.PaymentProducerDto;
+import com.redeemerlives.payments_service.kafka.PaymentConfirmation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class PaymentsService {
                 .build();
         paymentsRepository.save(payment);
 
-        PaymentProducerDto producerDto = new PaymentProducerDto(
+        PaymentConfirmation producerDto = new PaymentConfirmation(
                 paymentDto.getPaymentMethod().toString(),
                 paymentDto.getAmount(),
                 paymentDto.getOrderId(),
