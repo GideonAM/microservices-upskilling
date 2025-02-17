@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class PaymentProducer {
 
-    private final KafkaTemplate<String, PaymentProducerDto> kafkaTemplate;
+    private final KafkaTemplate<String, PaymentConfirmation> kafkaTemplate;
 
-    public void sendPaymentsToKafka(PaymentProducerDto producerDto) {
-        Message<PaymentProducerDto> message = MessageBuilder.withPayload(producerDto)
+    public void sendPaymentsToKafka(PaymentConfirmation producerDto) {
+        Message<PaymentConfirmation> message = MessageBuilder.withPayload(producerDto)
                 .setHeader(KafkaHeaders.TOPIC, "payment-topic")
                 .build();
         kafkaTemplate.send(message);

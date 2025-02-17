@@ -2,7 +2,7 @@ package com.redeemerlives.payments_service.kafka;
 
 import java.math.BigDecimal;
 
-public record PaymentProducerDto (
+public record PaymentConfirmation(
     String paymentMethod,
     BigDecimal amount,
     String orderId,

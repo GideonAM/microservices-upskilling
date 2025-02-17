@@ -8,7 +8,7 @@ import com.redeemerlives.order_service.entity.OrderItems;
 import com.redeemerlives.order_service.entity.Orders;
 import com.redeemerlives.order_service.exception.OperationNotPermitted;
 import com.redeemerlives.order_service.kafka.OrderProducer;
-import com.redeemerlives.order_service.kafka.OrderProducerDto;
+import com.redeemerlives.order_service.kafka.OrderConfirmation;
 import com.redeemerlives.order_service.mapper.OrderItemMapper;
 import com.redeemerlives.order_service.mapper.OrderMapper;
 import com.redeemerlives.order_service.repository.OrderItemRepository;
@@ -59,7 +59,7 @@ public class OrderService {
         PaymentDto paymentDto = orderMapper.toPaymentDto(savedOrder, customer, totalOrderCost, orderDto.paymentMethod());
         paymentServiceClient.createPayment(paymentDto);
 
-        OrderProducerDto producerDto = new OrderProducerDto(savedOrder.getId(),
+        OrderConfirmation producerDto = new OrderConfirmation(savedOrder.getId(),
                 savedOrder.getCreatedAt(),
                 customer.firstname(),
                 customer.lastname(),

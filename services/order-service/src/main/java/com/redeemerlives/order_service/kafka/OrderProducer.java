@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class OrderProducer {
 
-    private final KafkaTemplate<String, OrderProducerDto> kafkaTemplate;
+    private final KafkaTemplate<String, OrderConfirmation> kafkaTemplate;
 
-    public void sendOrderConfirmation(OrderProducerDto orderProducerDto) {
-        Message<OrderProducerDto> message = MessageBuilder.withPayload(orderProducerDto)
+    public void sendOrderConfirmation(OrderConfirmation orderConfirmation) {
+        Message<OrderConfirmation> message = MessageBuilder.withPayload(orderConfirmation)
                 .setHeader(KafkaHeaders.TOPIC, "order-topic")
                 .build();
         kafkaTemplate.send(message);
